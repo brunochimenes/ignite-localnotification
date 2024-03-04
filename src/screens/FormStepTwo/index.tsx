@@ -1,20 +1,29 @@
 import { useRef } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { TextInput } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { createBox, createText } from "@shopify/restyle";
 import { useForm } from "react-hook-form";
 
+import { ThemeProps } from "../../theme";
+
 import { AccountProps } from "../../contexts/AccountFormContext";
+
 import { useAccountForm } from "../../hooks/useAccountForm";
 
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
 import { Progress } from "../../components/Progress";
 
+const Box = createBox<ThemeProps>();
+const Text = createText<ThemeProps>();
+
 export function FormStepTwo() {
   const { navigate } = useNavigation();
   const {
     control,
     handleSubmit,
+    reset,
+    getValues,
     formState: { errors },
   } = useForm<AccountProps>();
 
@@ -29,10 +38,12 @@ export function FormStepTwo() {
   }
 
   return (
-    <View style={styles.container}>
+    <Box flex={1} justifyContent="center" bg="gray_600" p="l" gap="m">
       <Progress progress={60} />
 
-      <Text style={styles.title}>Suas informações</Text>
+      <Text color="purple" variant="title" mb="xl">
+        Suas informações
+      </Text>
 
       <Input
         icon="calendar"
@@ -53,6 +64,14 @@ export function FormStepTwo() {
           placeholder: "Data de nascimento",
           onSubmitEditing: () => phoneRef.current?.focus(),
           returnKeyType: "next",
+        }}
+        buttonProps={{
+          onPress: () => {
+            reset({
+              ...getValues(),
+              birth: "",
+            });
+          },
         }}
       />
 
@@ -76,24 +95,17 @@ export function FormStepTwo() {
           placeholder: "Número de telefone",
           onSubmitEditing: handleSubmit(handleNextStep),
         }}
+        buttonProps={{
+          onPress: () => {
+            reset({
+              ...getValues(),
+              phone: "",
+            });
+          },
+        }}
       />
 
       <Button title="Continuar" onPress={handleSubmit(handleNextStep)} />
-    </View>
+    </Box>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#F4F5F6",
-    justifyContent: "center",
-    padding: 24,
-    gap: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "700",
-    marginBottom: 44,
-  },
-});

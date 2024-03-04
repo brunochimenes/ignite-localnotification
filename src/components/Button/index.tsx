@@ -1,9 +1,10 @@
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  TouchableOpacityProps,
-} from "react-native";
+import { TouchableOpacity, TouchableOpacityProps } from "react-native";
+import { createBox, createText } from "@shopify/restyle";
+
+import { ThemeProps } from "../../theme";
+
+const Box = createBox<ThemeProps>();
+const Text = createText<ThemeProps>();
 
 type Props = TouchableOpacityProps & {
   title: string;
@@ -11,22 +12,17 @@ type Props = TouchableOpacityProps & {
 
 export function Button({ title, ...rest }: Props) {
   return (
-    <TouchableOpacity style={styles.container} activeOpacity={0.7} {...rest}>
-      <Text style={styles.title}>{title}</Text>
+    <TouchableOpacity activeOpacity={0.7} {...rest}>
+      <Box
+        width="100%"
+        height={56}
+        justifyContent="center"
+        alignItems="center"
+        backgroundColor="purple"
+        borderRadius={4}
+      >
+        <Text color="gray_100">{title}</Text>
+      </Box>
     </TouchableOpacity>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    width: "100%",
-    height: 56,
-    backgroundColor: "#8257E5",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  title: {
-    fontSize: 16,
-    color: "#FFF",
-  },
-});

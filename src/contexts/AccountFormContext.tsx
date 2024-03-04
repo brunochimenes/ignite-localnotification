@@ -9,7 +9,7 @@ export type AccountProps = {
   passwordConfirmation?: string;
 };
 
-type AccountFormContextDataProps = {
+export type AccountFormContextDataProps = {
   accountFormData: AccountProps;
   updateFormData: (value: AccountProps) => void;
 };

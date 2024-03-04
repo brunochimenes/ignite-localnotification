@@ -1,22 +1,30 @@
 import { useRef } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
-import { useForm } from "react-hook-form";
+import { TextInput } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { createBox, createText } from "@shopify/restyle";
+import { useForm } from "react-hook-form";
+
+import { ThemeProps } from "../../theme";
 
 import { AccountProps } from "../../contexts/AccountFormContext";
+
 import { useAccountForm } from "../../hooks/useAccountForm";
 
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
 import { Progress } from "../../components/Progress";
 
+const Box = createBox<ThemeProps>();
+const Text = createText<ThemeProps>();
+
 export function FormStepThree() {
   const { navigate } = useNavigation();
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    reset,
     getValues,
+    formState: { errors },
   } = useForm<AccountProps>();
 
   const { updateFormData } = useAccountForm();
@@ -36,10 +44,12 @@ export function FormStepThree() {
   }
 
   return (
-    <View style={styles.container}>
+    <Box flex={1} justifyContent="center" bg="gray_600" p="l" gap="m">
       <Progress progress={100} />
 
-      <Text style={styles.title}>Escolha sua senha</Text>
+      <Text color="purple" variant="title" mb="xl">
+        Escolha sua senha
+      </Text>
 
       <Input
         icon="key"
@@ -61,6 +71,14 @@ export function FormStepThree() {
           returnKeyType: "next",
           secureTextEntry: true,
         }}
+        buttonProps={{
+          onPress: () => {
+            reset({
+              ...getValues(),
+              password: "",
+            });
+          },
+        }}
       />
 
       <Input
@@ -80,24 +98,17 @@ export function FormStepThree() {
           onSubmitEditing: handleSubmit(handleNextStep),
           secureTextEntry: true,
         }}
+        buttonProps={{
+          onPress: () => {
+            reset({
+              ...getValues(),
+              passwordConfirmation: "",
+            });
+          },
+        }}
       />
 
       <Button title="Continuar" onPress={handleSubmit(handleNextStep)} />
-    </View>
+    </Box>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#F4F5F6",
-    justifyContent: "center",
-    padding: 24,
-    gap: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "700",
-    marginBottom: 44,
-  },
-});

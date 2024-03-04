@@ -1,4 +1,8 @@
-import { StyleSheet, View } from "react-native";
+import { createBox } from "@shopify/restyle";
+
+import { ThemeProps } from "../../theme";
+
+const Box = createBox<ThemeProps>();
 
 type Props = {
   progress: number;
@@ -6,20 +10,8 @@ type Props = {
 
 export function Progress({ progress }: Props) {
   return (
-    <View style={styles.container}>
-      <View style={[styles.progress, { width: `${progress}%` }]} />
-    </View>
+    <Box width="100%" height={4} bg="gray_100">
+      <Box width={`${progress}%`} height={4} backgroundColor="purple" />
+    </Box>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    width: "100%",
-    height: 4,
-    backgroundColor: "#DEDEDE",
-  },
-  progress: {
-    height: 4,
-    backgroundColor: "#8257E5",
-  },
-});

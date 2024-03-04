@@ -1,8 +1,11 @@
 import { useContext } from "react";
 
-import { AccountFormContext } from "../contexts/AccountFormContext";
+import {
+  AccountFormContext,
+  AccountFormContextDataProps,
+} from "../contexts/AccountFormContext";
 
-export function useAccountForm() {
+export function useAccountForm(): AccountFormContextDataProps {
   const context = useContext(AccountFormContext);
 
   return context;
